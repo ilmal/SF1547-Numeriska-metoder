@@ -1,5 +1,6 @@
 load STHLMTEMP.mat
 
+% -----------------
 % UPPGIFT 1a
 % värde av k
 k = 2*pi/365;
@@ -32,6 +33,7 @@ plot(x, Tdm, 'o')
 xlabel('t, tiden i dygn')
 ylabel('T, temperaturen i grader')
 
+% -----------------
 % UPPGIFT 1b
 % residualvektor
 r = Tdm - (p)';
@@ -46,6 +48,7 @@ ylabel('y, residual')
 s = sum(r.^2);
 fprintf("\nMinstakvadratsumman: %d\n\n", s);
 
+% -----------------
 % UPPGIFT 1c
 new_T = @(a, t) a(1) + a(2)*t + a(3)*t.^2 + a(4)*sin(k*t) + a(5)*cos(k*t) + a(6)*sin(2*k*t) + a(7)*cos(2*k*t);
 new_A = [ones(size(t)) t t.^2 sin(k*t) cos(k*t) sin(2*k*t) cos(2*k*t)];
@@ -69,11 +72,13 @@ plot(x, Tdm, 'o')
 xlabel('t, tiden i dygn')
 ylabel('T, temperaturen i grader')
 
+% -----------------
 % UPPGIFT 1d
 new_r = Tdm - (new_p)';
 new_s = sum(new_r.^2);
 fprintf("\nMinstakvadratsumman: %d\n", new_s);
 
+% -----------------
 % UPPGIFT 1e
 figure(4);
 plot(x, new_p)
