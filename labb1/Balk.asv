@@ -1,3 +1,4 @@
+% -----------------
 % Uppgift 2a
 % Newtons metod: x(n+1) = x(n) - (f(xn)/f'(xn)), n = 1, 2, ...
 
@@ -60,6 +61,13 @@ while difference_sekant_x > tolerance && iterations_sekant < max_iterations
     disp([iterations_sekant new_x_sekant start2_x difference_sekant_x]) % display
 end
 
+% Newtons metod löser problemet på 3 iterationer medan sekantmetoden tar 5 iterationer
+% Anledningen till detta är att Netwtons metod har en 
+% konvergenshastighet som är kvadratisk till skillnad från den superlinjära hastigheten hos sekantmetoden. 
+% Detta leder till att Newtons metod kommer vara snabbare i detta fall då funktionen är snäll (deriverbar)
+
+
+
 % -----------------
 % Uppgift 2c
 % Plotta vardera metods konvergenshastighet
@@ -73,31 +81,40 @@ ylabel('|T(n+1) - T(n)|');
 % -----------------
 % Uppgift 2d
 H2 = 2.8464405473; % nytt H-värde
-y_2d = @(t) 8*(exp(1)).^(-t/2)*cos(3*t) - H2; %
-y_2d_prim = @(t) -24*(exp(1)).^(-t/2)*sin(3*t) - 4*exp(1).^(-t/2)*cos(3*t);
+y_2d = @(t) 8*(exp(1)).^(-t/2)*cos(3*t) - H2; % samma modell med nytt H
+y_2d_prim = @(t) -24*(exp(1)).^(-t/2)*sin(3*t) - 4*exp(1).^(-t/2)*cos(3*t); % derivatan
 
-start2d_x = 2.0;
+% startgissning baserad på plottad graf och tolerans från uppgift
+start2d_x = 2.1;
 tolerance_2d = 10^(-8);
-errors_2d = [];
+errors_2d = []; % för att plotta konvergens
 
+% antal iterationer + max antal iterationer
 iterations_2d = 0;
 max_iterations_2d = 1000;
 difference_2d = 1;
 
 disp("Newton med nytt H-värde: ");
 
+% iterera med newtonmetoden
 while iterations_2d < max_iterations_2d && difference_2d > tolerance_2d
-    iterations_2d = iterations_2d+1;
-    new_x_2d = start2d_x - (y_2d(start2d_x)/y_2d_prim(start2d_x));
-    difference_2d = abs(new_x_2d - start2d_x);
-    errors_2d = [errors_2d difference_2d];
-    start2d_x = new_x_2d;
-    disp([iterations_2d new_x_2d start2d_x difference_2d]);
+    iterations_2d = iterations_2d+1; % öka iterationscounter
+    new_x_2d = start2d_x - (y_2d(start2d_x)/y_2d_prim(start2d_x)); % beräkna nytt x med newtonmetoden
+    difference_2d = abs(new_x_2d - start2d_x); % beräkna differens
+    errors_2d = [errors_2d difference_2d]; % för att plotta konvergens
+    start2d_x = new_x_2d; % sätt nya x som start
+    disp([iterations_2d new_x_2d start2d_x difference_2d]); % display
 end
 
+% plotta figur med nytt H gentemot gammalt H
 figure;
 semilogy(1:length(errors_2d), errors_2d, 'b-o', 'DisplayName', 'Newton');
 hold on;
 semilogy(1:length(errors_newton), errors_newton, 'r-o', 'DisplayName', 'Newton')
 xlabel('Iteration');
 ylabel('|T(n+1) - T(n)|');
+
+Anledningen bakom varför newtons metod går långsammare med det nya H värdet är eftersom detta H värde ligger nära en maximipunkt (alltså derivatan är nära noll)
+När man an
+
+% -----------------

@@ -61,6 +61,13 @@ while difference_sekant_x > tolerance && iterations_sekant < max_iterations
     disp([iterations_sekant new_x_sekant start2_x difference_sekant_x]) % display
 end
 
+% Newtons metod löser problemet på 3 iterationer medan sekantmetoden tar 5 iterationer
+% Anledningen till detta är att Netwtons metod har en 
+% konvergenshastighet som är kvadratisk till skillnad från den superlinjära hastigheten hos sekantmetoden. 
+% Detta leder till att Newtons metod kommer vara snabbare i detta fall då funktionen är snäll (deriverbar)
+
+
+
 % -----------------
 % Uppgift 2c
 % Plotta vardera metods konvergenshastighet
@@ -106,4 +113,9 @@ hold on;
 semilogy(1:length(errors_newton), errors_newton, 'r-o', 'DisplayName', 'Newton')
 xlabel('Iteration');
 ylabel('|T(n+1) - T(n)|');
+
+% Anledningen bakom varför newtons metod går långsammare med det nya H värdet är eftersom detta H värde ligger nära en maximipunkt (alltså derivatan är nära noll)
+% När man använder newtons sats vid en punkt nära ett maximiställe är newtons metod inte längre kvadratisk utan linjär. Vilket leder till fler iterationer och sämre hastighet. 
+% 
+
 % -----------------
