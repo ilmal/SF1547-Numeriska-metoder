@@ -16,8 +16,15 @@ errors_secant = [];
 
 % anonym modell där H = y = 0.5
 % 0.5 = 8e^(-t/2)*cos(3t) -> f(x) = 0 ger 0 = 8e^(-t/2)*cos(3t) - 0.5
-y = @(t) 8*(exp(1)).^(-t/2)*cos(3*t) - H;
-y_prim = @(t) -24*(exp(1)).^(-t/2)*sin(3*t) - 4*exp(1).^(-t/2)*cos(3*t);
+y = @(t) 8.*(exp(1)).^(-t/2).*cos(3.*t) - H;
+y_prim = @(t) -24.*(exp(1)).^(-t/2).*sin(3.*t) - 4.*exp(1).^(-t/2).*cos(3.*t);
+
+% plotta funktion för att gissa startvärde
+% t = linspace(1, 100);
+% y_plot = y(t);
+% figure;
+% plot(t, y_plot);
+
 
 % startvärde baserad på plottad graf och tolerans från uppgiften
 start_x = 4.5;
@@ -43,8 +50,8 @@ end
 % -----------------
 % Uppgift 2b
 % Samma H men med sekantmetoden
-start1_x = 4.4; % x0
-start2_x = 4.6; % x1
+start1_x = 4.4; % x0 - startgissning 1
+start2_x = 4.6; % x1 - startgissning 2
 difference_sekant_x = 1; % skillnaden
 iterations_sekant = 0; % antalet iterationer
 
