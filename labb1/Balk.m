@@ -81,7 +81,7 @@ ylabel('|T(n+1) - T(n)|');
 % -----------------
 % Uppgift 2d
 H2 = 2.8464405473; % nytt H-värde
-y_2d = @(t) 8*(exp(1)).^(-t/2)*cos(3*t) - H2; % samma modell med nytt H
+y_2d = @(t) 8.*(exp(1)).^(-t/2).*cos(3*t) - H2; % samma modell med nytt H
 y_2d_prim = @(t) -24*(exp(1)).^(-t/2)*sin(3*t) - 4*exp(1).^(-t/2)*cos(3*t); % derivatan
 
 % startgissning baserad på plottad graf och tolerans från uppgift
