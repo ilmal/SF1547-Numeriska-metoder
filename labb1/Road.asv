@@ -92,9 +92,7 @@ end
 
 % Konvergenshastigheten för felen är kvadratisk eftersom kvoten är ca 64
 % Enligt teori: |x(n+1) - x(n)| = |h(n+1)| ≈ K•|h(n)|^2
-% |h(n+1)|/|h(n)|^2 ≈ 64
-% då kvoten stämmer väl överens med teorin så konvergerar newton som det
-% ska
+% ||
 
 % -----------------
 % Uppgift 3b
