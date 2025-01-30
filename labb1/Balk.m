@@ -121,8 +121,8 @@ semilogy(1:length(errors_newton), errors_newton, 'r-o', 'DisplayName', 'Newton')
 xlabel('Iteration');
 ylabel('|T(n+1) - T(n)|');
 
-% Anledningen bakom varför newtons metod går långsammare med det nya H värdet är eftersom detta H värde ligger nära en maximipunkt (alltså derivatan är nära noll)
-% När man använder newtons sats vid en punkt nära ett maximiställe är newtons metod inte längre kvadratisk utan linjär. Vilket leder till fler iterationer och sämre hastighet. 
-% 
+% Anledningen till att newtons metod går långsammare är eftersom det finns
+% en rot med högre multiplicitet än 1 nära nollpunkten vi söker. I detta 
+% fall kommer metoden att konvergera linjärt istället för kvadratiskt. 
 
 % -----------------

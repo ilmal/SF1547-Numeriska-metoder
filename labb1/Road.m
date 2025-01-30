@@ -11,14 +11,13 @@ xa = [175, 410, 675]; ya = [950, 2400, 1730];
 la = [60, 75, 42];
 
 % Vektorer med värden för (xb, yb) samt lb (längden)
-xb = [160, 381, 656]; 
-yb = [1008, 2500, 1760]; 
+xb = [160, 381, 656]; yb = [1008, 2500, 1760]; 
 lb = [45, 88, 57];
  
-% Plotta cirklarna (nivåkurva 0) för att hitta högra skärningspunkt
+% Plotta cirklarna (nivåkurva 0) för att hitta högra skärningspunkt (gissningar)
 figure;
 hold on;
-colors = ['r', 'g', 'b']; % Färger för olika sets
+colors = ['r', 'g', 'b']; % Färger för olika cirkel-'par'
 
 % Loop genom alla par av cirklar 
 for i = 1:length(xa)
@@ -34,12 +33,12 @@ for i = 1:length(xa)
     plot(xa(i), ya(i), 'o', 'MarkerSize', 8, 'MarkerFaceColor', colors(i));
     plot(xb(i), yb(i), 'o', 'MarkerSize', 8, 'MarkerFaceColor', colors(i));
     
-    % Text för vilken punkt det är P
+    % Text för vilken punkt det är (P)
     text(xa(i) + 10, ya(i), ['Point ' num2str(i)], 'Color', colors(i), 'FontSize', 12);
     text(xb(i) + 10, yb(i), ['Point ' num2str(i)], 'Color', colors(i), 'FontSize', 12);
 end
 
-% punkter P 1-3 för for-loop (slipper kod-duplikation)
+% punkter P 1-3 för for-loop (slippa kod-duplikation)
 for i = 1:length(xa)
     % Printa vilken punkt som ska hittas i denna iteration
     fprintf('\n=== Solving for Point P%d ===\n', i);
@@ -77,7 +76,7 @@ for i = 1:length(xa)
         new_x = x_guess + h; % Hitta nya x
         diff = norm(h); % differensen är normen av h
         x_guess = new_x; % sätt nya x som gissning
-        errors = [errors, diff];
+        errors = [errors, diff]; % spara felet
 
         % Print resultat för varje iteration
         fprintf('%4d | %10.6f | %10.6f | %8.2e \n', iter, new_x(1), new_x(2), diff);
