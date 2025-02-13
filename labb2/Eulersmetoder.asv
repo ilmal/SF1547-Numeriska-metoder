@@ -156,10 +156,10 @@ for jj = 1:length(nb)
         % Printa ut resultaten
         disp([ii y y0 t])
     end
-    y_errorsb = [y_errorsb, abs(y_analytic(8) - yvec(8))]; 
+    y_errorsb = [y_errorsb, abs(y_analytic(8) - yvec(8))]; % uppg 2c
 
     % Plotta grafen med tvec och yvec och en godtycklig färg
-    plot(tvec, yvec, 'o-', 'Color', colorsb(jj,:), 'LineWidth', 1.5, 'MarkerSize', 4);
+    plot(tvec, yvec, 'o-', 'Color', colors(jj,:), 'LineWidth', 1.5, 'MarkerSize', 4);
 end
 
 legend('Analytisk lösning', 'Euler-bakåt (50)', 'Euler-bakåt (100)', ...
