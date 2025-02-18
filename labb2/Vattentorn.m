@@ -1,3 +1,5 @@
+format long;
+
 % Uppgift 1a
 % -----------------------------
 % Fördefinierade värden & funktion
@@ -25,24 +27,19 @@ fprintf('\n-----------------------------------------')
 fprintf('\n|     n      |       Result (V)         |')
 fprintf('\n|------------|--------------------------|')
 
-% För felanalys
-errors_trapeze = []; 
-errors_trapeze_h = []; 
-
 for ii = 1:length(n)
     % Beräkna steglängd baserat på värde från n
-    n0 = n(ii);
-    h = (endVal-startVal) / n0;
-    errors_trapeze_h = [errors_trapeze_h, h]; 
-    sum = 0; % sätt startsumma till 0
+    n0 = n(ii);                     % välj antal punkter
+    h = (endVal - startVal) / n0;   % beräkna steglängd
+    sum = 0;                        % sätt startsumma till 0
 
     % Beräkna summan av alla termer gånger h
     for jj = 1:n0
-        x = startVal + h*(jj-1); % Uppdatera till nya punkten
-        term = y_2(x); % hitta termen
+        x = startVal + h*(jj-1); % uppdatera till nya punkten
+        term = y_2(x);           % hitta termen
         
         % Om det är första eller sista term, dela med två
-        if jj == 1||jj == n0+1
+        if jj == 1||jj == n0
             term = term/2;
         end
         
@@ -53,28 +50,11 @@ for ii = 1:length(n)
     
     % Hitta res genom att multiplicera med h och pi
     res = sum * h * pi;
-    
-    % Lägg till felet för n0 i en array
-    error = abs(pi*I - res);
-    errors_trapeze = [errors_trapeze, error];
-
-    fprintf('\n| %6d     |    %20.6f  |', n0, res)
+    fprintf('\n| %6d     |    %20.6f  |', n0, res) % printa resultat
 
 end
 
 fprintf('\n-----------------------------------------\n')
-
-% Felanalys med figur
-% eh ≤ Ch^2 -> ln eh ≤ ln C + 2 * ln h
-figure;
-loglog(errors_trapeze_h, errors_trapeze, '-o', 'LineWidth', 1.5);
-xlabel('Steglängd h');
-ylabel('Felet |I - Th|');
-title('Konvergens av Trapetsmetoden');
-grid on;
-
-p1 = polyfit(log(errors_trapeze_h), log(errors_trapeze), 1);
-disp(['Noggrannhetsordning Trapetsmetoden, p ≈ ', num2str(p1(1))]);
 
 % -----------------------------
 
@@ -87,27 +67,23 @@ fprintf('\n-----------------------------------------')
 fprintf('\n|     n      |       Result (V)         |')
 fprintf('\n|------------|--------------------------|')
 
-errors_simpson = []; % För felanalys
-errors_simpson_h = [];
-
 for ii = 1:length(n) 
-    n0 = n(ii);
-    h = (endVal-startVal)/n0;
-    errors_simpson_h = [errors_simpson_h, h];
-    sum = 0;
-
-    for jj = 1:n0
+    n0 = n(ii);                 % välj antal punkter
+    h = (endVal-startVal)/n0;   % beräkna steglängd
+    sum = 0;                    % sätt startsumma till 0
+    
+    % loopa till n0+1 eftersom n0 är jämnt och vi vill ha jämnt antal
+    % delintervall -> n0 jämnt gör udda antal delintervall
+    for jj = 1:n0+1
         x = startVal + h*(jj-1);
         term = y_2(x);
         
-        % Om det är en jämn term OCH inte första termen
-        if mod(jj, 2) == 0 && jj ~= 1
-            term = 4*term;
-        end
-        
-        % Om det är udda term OCH inte sista termen
-        if mod(jj, 2) == 1 && jj~=n0
-            term = 2*term;
+        if jj == 1 || jj == n0+1  % Första och sista term
+            term = term;          % Ingen multiplikation (ska vara 1)
+        elseif mod(jj, 2) == 0  % Jämn term
+            term = 4 * term;
+        elseif mod(jj, 2) == 1  % Udda term
+            term = 2 * term;
         end
 
         sum = sum+term;
@@ -116,22 +92,7 @@ for ii = 1:length(n)
     
     res = (h/3) * sum * pi;
     
-    error = abs(I - (h/3)*sum);
-    errors_simpson = [errors_simpson, error];
-
     fprintf('\n| %6d     |    %20.6f  |', n0, res)
 end
 
 fprintf('\n-----------------------------------------\n')
-
-% Felanalys med figur
-% eh ≤ Ch^2 -> ln eh ≤ ln C + 2 * ln h
-figure;
-loglog(errors_simpson_h, errors_simpson, '-o', 'LineWidth', 1.5);
-xlabel('Steglängd h');
-ylabel('Felet |I - Th|');
-title('Konvergens av Simpsons metod');
-grid on;
-
-p1 = polyfit(log(errors_trapeze_h), log(errors_trapeze), 1);
-disp(['Noggrannhetsordning Simpsons metod, p ≈ ', num2str(p1(1))]);
