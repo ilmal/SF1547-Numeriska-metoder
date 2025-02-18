@@ -127,11 +127,11 @@ fprintf('\n-----------------------------------------\n')
 % Felanalys med figur
 % eh ≤ Ch^2 -> ln eh ≤ ln C + 2 * ln h
 figure;
-loglog(errors_simpson_h, errors_simpson, '-o', 'LineWidth', 1.5);
+loglog(errors_simpson_h, errors_trapeze, '-o', 'LineWidth', 1.5);
 xlabel('Steglängd h');
 ylabel('Felet |I - Th|');
-title('Konvergens av Simpsons metod');
+title('Konvergens av Trapetsmetoden');
 grid on;
 
 p1 = polyfit(log(errors_trapeze_h), log(errors_trapeze), 1);
-disp(['Noggrannhetsordning Simpsons metod, p ≈ ', num2str(p1(1))]);
+disp(['Noggrannhetsordning Trapetsmetoden, p ≈ ', num2str(p1(1))]);
