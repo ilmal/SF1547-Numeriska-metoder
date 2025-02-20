@@ -2,97 +2,53 @@ format long;
 
 % Uppgift 1a
 % -----------------------------
-% Fördefinierade värden & funktion
-% 0.1 ≤ beta ≤ 0.3
-% 0 ≤ x ≤ 20
-% V = π integral(0, 20, y(x;beta)^2)dx
+
+% Trapetsmetoden
 
 beta = 0.2; % givet värde på beta
-y = @(x) (exp(beta*x)+8)/(1+(x/5)^3); % y
+y = @(x) (exp(beta*x)+8)./(1+(x/5).^3); % y
 y_2 = @(x) ((exp(beta*x)+8)./(1+(x/5).^3)).^2; % y^2
 
-% Integrationsgränser och olika värden på n
-startVal = 0; endVal = 20;
-n = [10 20 40 80 100 200 500 1000 1280];
+a = 0; b = 20; % Integrationsgränser
+N = [100 500 800 1280 2000]; % Antalet steg
 
-% Exakt värde för felanalys
-I = integral(y_2, startVal, endVal);
+errors = zeros(size(N));
 
-% 1. Trapetsmetoden
-%    Approximera med räta linjer och steglängden h
+I = integral(y_2, a, b); % Faktiskt integralvärde att jämföra med
 
-fprintf('\n-----------------------------------------')
-fprintf('\n Approximation using Trapezoidal Method')
-fprintf('\n-----------------------------------------')
-fprintf('\n|     n      |       Result (V)         |')
-fprintf('\n|------------|--------------------------|')
+for ii = 1:length(N)
+    h = (b-a)/N(ii);
 
-for ii = 1:length(n)
-    % Beräkna steglängd baserat på värde från n
-    n0 = n(ii);                     % välj antal punkter
-    h = (endVal - startVal) / n0;   % beräkna steglängd
-    sum = 0;                        % sätt startsumma till 0
+    x = a:h:b; % punkterna som ska räknas ut
+    yx = y_2(x);  % räkna ut funktionen i x-värdena
 
-    % Beräkna summan av alla termer gånger h
-    for jj = 1:n0
-        x = startVal + h*(jj-1); % uppdatera till nya punkten
-        term = y_2(x);           % hitta termen
-        
-        % Om det är första eller sista term, dela med två
-        if jj == 1||jj == n0
-            term = term/2;
-        end
-        
-        % Uppdatera summan
-        sum = sum+term;
-        
-    end
+    Th = h*(sum(yx) - 0.5*(yx(1)+yx(end))); % trapetsregeln
+    res = pi*Th; % multiplicera resultat med pi
     
-    % Hitta res genom att multiplicera med h och pi
-    res = sum * h * pi;
-    fprintf('\n| %6d     |    %20.6f  |', n0, res) % printa resultat
+    errors(ii) = abs(res-pi*I);
 
+    fprintf('N = %d, eh = %.6e\n', N(ii), errors(ii));
 end
 
-fprintf('\n-----------------------------------------\n')
+% Beräkna noggrannhetsordningen p
+fprintf('\n');
+for ii = 1:length(N)-1
+    % två intilliggande h-värden
+    h1 = (b-a)/N(ii);
+    h2 = (b-a)/N(ii+1);
 
-% -----------------------------
-
-% 2. Simpsons metod
-%    Approximera med andragradspolynom och steglängden h
-
-fprintf('\n-----------------------------------------')
-fprintf('\n Approximation using Simpsons Method')
-fprintf('\n-----------------------------------------')
-fprintf('\n|     n      |       Result (V)         |')
-fprintf('\n|------------|--------------------------|')
-
-for ii = 1:length(n) 
-    n0 = n(ii);                 % välj antal punkter
-    h = (endVal-startVal)/n0;   % beräkna steglängd
-    sum = 0;                    % sätt startsumma till 0
+    % två intilliggande fel
+    e1 = errors(ii);
+    e2 = errors(ii+1);
     
-    % loopa till n0+1 eftersom n0 är jämnt och vi vill ha jämnt antal
-    % delintervall -> n0 jämnt gör udda antal delintervall
-    for jj = 1:n0+1
-        x = startVal + h*(jj-1);
-        term = y_2(x);
-        
-        if jj == 1 || jj == n0+1  % Första och sista term
-            term = term;          % Ingen multiplikation (ska vara 1)
-        elseif mod(jj, 2) == 0  % Jämn term
-            term = 4 * term;
-        elseif mod(jj, 2) == 1  % Udda term
-            term = 2 * term;
-        end
+    % eh ≈ Ch^p -> log eh = log C + p * log h
+    % två fel: e1/e2 = (h1/h2)^p -> log (e1/e2) = log (h1/h2) * p
+    % alltså:
+    p = log(e1/e2) / log(h1/h2); % beräkna noggrannhetsordning p
 
-        sum = sum+term;
-
-    end
-    
-    res = (h/3) * sum * pi;
-    
-    fprintf('\n| %6d     |    %20.6f  |', n0, res)
+    fprintf('p mellan N=%d och N=%d: %.4f\n', N(ii), N(ii+1), p);
 end
 
-fprintf('\n-----------------------------------------\n')
+
+% Simpsons metod
+
