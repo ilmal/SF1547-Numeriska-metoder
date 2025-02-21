@@ -20,7 +20,7 @@ f = @(beta) pi*integral(@(x) y_2(x, beta), a, b) - 1500;
 % yline(0, '--r', 'y=0', 'LineWidth', 1.5);
 
 x0 = 0.262; x1 = 0.263; % startgissningar baserat på plot
-tol = 10^(-10); % tolerans
+tol = 10^(-12); % tolerans
 
 iter = 0; maxiter = 100; % iterationer
 
@@ -39,7 +39,7 @@ while abs(x1-x0) > tol && iter < maxiter
     
     % beräkna konvergensen om villkor stämmer
     if iter > 2
-        p = log(errors(iter)/errors(iter-1)) / log(errors(iter-1)/errors(iter-2));
+        p = log(errors(iter)-errors(iter-1)) / log(errors(iter-1)-errors(iter-2));
         fprintf("\n%d    |  %.10f |  %.10f  |  %.4f", iter, x1, x0, p);
     % printa ---- om inget p-värde kan beräknas    
     else
