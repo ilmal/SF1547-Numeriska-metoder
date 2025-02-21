@@ -20,38 +20,36 @@ f = @(beta) pi*integral(@(x) y_2(x, beta), a, b) - 1500;
 % yline(0, '--r', 'y=0', 'LineWidth', 1.5);
 
 x0 = 0.262; x1 = 0.263; % startgissningar baserat på plot
-tol = 10^(-10); % tolerans
+tol = 10^(-); % tolerans
 
-iter = 0; maxiter = 100; % iterationer
+iter = 0; maxiter = 100;
 
-errors = zeros(1, maxiter); % errors 
+errors = zeros(1, maxiter);
 
 fprintf("\nIter |      x1       |       x0       |       p  ")
 fprintf("\n----------------------------------------------------")
 fprintf("\n%d    |  %.10f |  %.10f  |  ----", iter, x1, x0);
 
-% Sekantmetoden
 while abs(x1-x0) > tol && iter < maxiter 
-    iter = iter+1; % uppdatera iter
+    iter = iter+1;
     x = x1 - f(x1) * (x1-x0) / (f(x1)-f(x0)); % sekantmetoden
 
-    errors(iter) = abs(x-x1); % spara errors
-    
-    % beräkna konvergensen om villkor stämmer
+    errors(iter) = abs(x-x1);
+
     if iter > 2
         p = log(errors(iter)/errors(iter-1)) / log(errors(iter-1)/errors(iter-2));
         fprintf("\n%d    |  %.10f |  %.10f  |  %.4f", iter, x1, x0, p);
-    % printa ---- om inget p-värde kan beräknas    
+        
     else
         fprintf("\n%d    |  %.10f |  %.10f  |  ---- ", iter, x1, x0);
     end
-    
-    % uppdatera x0 och x1
+
     x0 = x1;
     x1 = x;
     
 end
 
-% Sätt x1 som resultat och printa
 res = x1;
 fprintf("\n \nResultat = %.10f\n", res);
+
+% Konvergensstudie

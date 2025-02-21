@@ -25,15 +25,10 @@ U0 = [1; 0]; % U(t0) = [c1, c2]
 
 % -----------------------------
 % Uppgift 3b
-% Använd ode45
 
 function F = returnVectorF(t, y, R, L, C)
     F = [y(2);
         -((1/C)*y(1) + R*y(2))/L
     ];
-    
 end
-
-
-
 

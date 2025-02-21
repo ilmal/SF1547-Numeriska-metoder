@@ -70,6 +70,8 @@ for ii = 1:length(N)
     x = a:h:b; % punkterna som ska räknas ut
     yx = y_2(x);  % räkna ut funktionen i x-värdena
 
+    % 2:2:end-1 börjar på index 2 och inkrementerar med 2 och slutar på end-1
+    % 3:2:end-2 börjar på index 3 och inkrementerar med 2 och slutar på end-2
     Sh = h/3 * (yx(1) + 4*sum(yx(2:2:end-1)) + 2*sum(yx(3:2:end-2)) + yx(end));
     res = pi*Sh; % multiplicera resultat med pi
     
