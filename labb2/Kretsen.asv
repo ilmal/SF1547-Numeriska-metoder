@@ -86,56 +86,32 @@ grid on;
 % Uppgift 3d
 % Euler fram för system
 
-% Givna värden på R, L, C
-L = 2; C = 0.5; R = 1;
-
 % Vektor F med derivatorna u' och v'
 F = @(t, U) [U(2); -((1/C)*U(1) + R*U(2))/L];
 U0 = [1; 0];
 
 N = [40 80 160 320]; % antal tidssteg
-t0 = 0; Tslut = 40;
+Tstart = 0; Tslut = 40;
 
 disp(F);
 
-figure; 
 for ii = 1:length(N)
     N0 = N(ii);
-    h = (Tslut-t0)/N0; % steglängd
-    t = t0;
-    U = U0;
+    h = (Tslut-Tstart)/N0; % steglängd
 
     % vektorer för att spara alla beräknade punkter (n0+1 rader, 1 kolumn)
     tvec = zeros(1, N0+1);
     Uvec = zeros(2, N0+1);
 
-    Uvec(:,1) = U; % sätt 1st kolumn i matris till U0 värden
-    tvec(1) = t0;
+    Uvec(:,1) = U0; % sätt 1st kolumn i matris till U0 värden
+    tvec(1) = t
 
     for jj = 1:N0
-        U = U + h*F(t0, U);
-        t = t+h;
 
-        Uvec(:, jj+1) = U;
-        tvec(jj+1) = t;
     end
 
-    subplot(2, 2, ii);
-    tspan2 = [0 40];
-
-    % Plotta ode45 lösn
-    [t, y] = ode45(@(t, y) returnVectorF(t, y, 1, 2, 0.5), tspan2, y0);
-    plot(t, y(:,1), 'b-', 'LineWidth', 1.5); hold on;
-    plot(t, y(:,2), 'r-', 'LineWidth', 1.5); hold on;
-    
-    % plotta euler lösn
-    plot(tvec, Uvec(1,:), '-o', tvec, Uvec(2,:), '-or')
-
-    % formattering + text o sånt
-    title(sprintf('Euler Method vs. ODE45 (N = %d)', N0));
-    xlabel('Tid t');
-    ylabel('Laddning Q och Ström I');
-    legend({'ODE45 Q(t)', 'ODE45 I(t)', 'Euler Q(t)', 'Euler I(t)'}, 'Location', 'Best');
-    grid on;
-
 end
+
+
+
+
