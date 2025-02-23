@@ -9,7 +9,7 @@ a = 1; k = 1; Ti = 450; Te = 20; r0 = 1; rslut = 2;
 N = 25; % N+1 delintervall
 
 tol = 10^(-2);
-diff = 0.1;
+diff = 1;
 prev_T_end = 0;
 
 while diff > tol
@@ -21,24 +21,24 @@ while diff > tol
     ri = (r0:h:rslut)'; % alla punkter r med steglängd h
     
     % sätt kolumn 1-2 i rad 1 (rad 1 behandlas separat)
-    A(1, 1:2) = [-2*ri(1)/h^2 (ri(1)/h^2)+(1/(2*h))];
+    A(1, 1:2) = [-2*ri(1)/h^2 (ri(1)/h^2)+1/2*h];
     b(1) = -Ti*((ri(1)/h^2)-(1/2*h));
 
     % for-loop genom inre rader
     for ii=2:N-1
         % sätt rad ii och kolumn ii-1
-        A(ii,ii-1) = (ri(ii)/h^2)-(1/(2*h));
+        A(ii,ii-1) = (ri(ii)/h^2)-(1/2*h);
         
         % sätt rad ii och kolumn ii
         A(ii, ii) = -2*ri(ii)/h^2;
     
         % sätt rad ii och kolumn ii+1
-        A(ii, ii+1) = (ri(ii)/h^2)+(1/(2*h));
+        A(ii, ii+1) = (ri(ii)/h^2)+(1/2*h);
     end
 
     % sista raden N, sätt sista två kolumnerna N-1 och N
-    A(N, N-1:N) = [(ri(N)/h^2)-(1/(2*h)) (-2*ri(N)/h^2)+(1/(k+a*h))*((ri(N)/h^2)+(1/(2*h)))];
-    b(N) = -a*h*Te/(k+a*h)*((ri(N)/h^2)+(1/(2*h)));
+    A(N, N-1:N) = [(ri(N)/h^2)-(1/2*h) (-2*ri(N)/h^2)+(1/(k+a*h))*((ri(N)/h^2)+(1/2*h))];
+    b(N) = -a*h*Te/(k+a*h)*((ri(N)/h^2)+(1/2*h));
     
     A = sparse(A); % lagra som gles matris
     
@@ -55,7 +55,7 @@ while diff > tol
     N = 2 * N;
 end
 
-fprintf('\nFinal T(end) = %.10f\n', T(end));
+fprintf('Final T(end) = %.10f\n', T(end));
 
 
 
