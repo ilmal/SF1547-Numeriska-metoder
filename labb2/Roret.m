@@ -1,6 +1,5 @@
 format long; 
 
-% Nytt försök
 % --------------------------------------------------
 % Uppgift 4c
 
@@ -18,7 +17,8 @@ while diff > tol
     A = zeros(N, N); % skapa default 0-matris med rätt dimensioner
     b = zeros(N, 1); % skapa vektorn b i ekvationen Ax = b
     
-    ri = (r0:h:rslut)'; % alla punkter r med steglängd h
+    % ri = (r0+h:h:rslut-h)'; % alla punkter r med steglängd h
+    ri = linspace(r0 + h, rslut - h, N)';
     
     % sätt kolumn 1-2 i rad 1 (rad 1 behandlas separat)
     A(1, 1:2) = [-2*ri(1)/h^2, (ri(1)/h^2)+(1/(2*h))];
@@ -37,19 +37,21 @@ while diff > tol
     end
 
     % sista raden N, sätt sista två kolumnerna N-1 och N
-    A(N, N-1:N) = [(ri(end)/h^2)-(1/(2*h)), (-2*ri(end)/h^2)+(1/(k+a*h))*((ri(end)/h^2)+(1/(2*h)))];
+    A(N, N-1:N) = [(ri(end)/h^2)-(1/(2*h)), (-2*ri(end)/h^2)+(k/(k+a*h))*((ri(end)/h^2)+(1/(2*h)))];
     b(N) = -a*h*Te/(k+a*h)*((ri(end)/h^2)+(1/(2*h)));
     
     A = sparse(A); % lagra som gles matris
     
     T = A\b;
+
+    Tend = (a*h*Te+k*T(end))/(k+a*h);
     
-    fprintf('Iteration with N = %d: T(end) = %.10f\n', N, T(end));
+    fprintf('Iteration with N = %d: T(N+1) = %.10f\n', N, Tend);
 
     diff = abs(T(end)-prev_T_end);
     prev_T_end = T(end);
-    
-    fprintf('Difference at the moment: %.10f\n', diff);
+
+    fprintf('Difference at the moment: %.10f\n \n', diff);
         
     % dubbla N
     N = 2 * N;
