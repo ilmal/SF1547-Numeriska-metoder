@@ -4,6 +4,7 @@ N = 25; % N+1 delintervall
 h = (rslut-r0)/(N+1); % steglängd
 
 Tresult = rand(a, N, k, Ti, Te, r0, rslut);
+
 Tend = (a*h*Te*Tresult(end))/(k+a*h);
 disp(['Temperatur vid r = 2: ', num2str(Tend)]);
 
@@ -22,12 +23,12 @@ function Tnew = rand(a, N, k, Ti, Te, r0, rslut)
     end
 
     % Sista raden utanför for-loop, rad N
-    A(N, N-1:N) = [(ri(end)/h^2)-(1/(2*h)), (-2*ri(N))/h^2 + (1/(k+a*h))*(ri(N)/h^2+(1/(2*h)))];
-
+    A(N, N-1:N) = [(ri(N)/h^2)-(1/(2*h)), (-2*ri(N))/h^2 + (1/(k+a*h))*(ri(N)/h^2+(1/(2*h)))];
     A = sparse(A);
+
     b = zeros(N, 1);
-    b(1) = -Ti * (ri(1)/h^2 - 1/(2*h));
-    b(end) = ((-a*h*Te)/(k+a*h))*(ri(end)/h^2+(1/(2*h)));
+    b(1) = -Ti*(ri(1)/h^2 - 1/(2*h));
+    b(N) = ((-a*h*Te)/(k+a*h))*(ri(N)/h^2+1/(2*h));
 
     T = A\b;
     Tnew = T;

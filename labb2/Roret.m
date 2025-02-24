@@ -13,7 +13,7 @@ diff = 0.1;
 prev_T_end = 0;
 
 while diff > tol
-    h = (rslut-r0)/N; % steglängd
+    h = (rslut-r0)/(N+1); % steglängd
 
     A = zeros(N, N); % skapa default 0-matris med rätt dimensioner
     b = zeros(N, 1); % skapa vektorn b i ekvationen Ax = b
@@ -21,8 +21,8 @@ while diff > tol
     ri = (r0:h:rslut)'; % alla punkter r med steglängd h
     
     % sätt kolumn 1-2 i rad 1 (rad 1 behandlas separat)
-    A(1, 1:2) = [-2*ri(1)/h^2 (ri(1)/h^2)+(1/(2*h))];
-    b(1) = -Ti*((ri(1)/h^2)-(1/2*h));
+    A(1, 1:2) = [-2*ri(1)/h^2, (ri(1)/h^2)+(1/(2*h))];
+    b(1) = -Ti*((ri(1)/h^2)-(1/(2*h)));
 
     % for-loop genom inre rader
     for ii=2:N-1
@@ -37,8 +37,8 @@ while diff > tol
     end
 
     % sista raden N, sätt sista två kolumnerna N-1 och N
-    A(N, N-1:N) = [(ri(N)/h^2)-(1/(2*h)) (-2*ri(N)/h^2)+(1/(k+a*h))*((ri(N)/h^2)+(1/(2*h)))];
-    b(N) = -a*h*Te/(k+a*h)*((ri(N)/h^2)+(1/(2*h)));
+    A(N, N-1:N) = [(ri(end)/h^2)-(1/(2*h)), (-2*ri(end)/h^2)+(1/(k+a*h))*((ri(end)/h^2)+(1/(2*h)))];
+    b(N) = -a*h*Te/(k+a*h)*((ri(end)/h^2)+(1/(2*h)));
     
     A = sparse(A); % lagra som gles matris
     
