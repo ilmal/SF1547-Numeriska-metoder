@@ -54,4 +54,4 @@ end
 
 % Sätt x1 som resultat och printa
 res = x1;
-fprintf("\n \nResultat = %.10f\n", res);
+fprintf("\n \nResultat, beta = %.10f\n", res);

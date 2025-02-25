@@ -18,7 +18,7 @@ format long;
 % Omskrivning:
 % q'' = f(t, q, q') 
 % -> u(t) = q(t), u(0) = 1
-%    v(t) = q'(t) 
+%    v(t) = q'(t), v(0) = 0
 
 % -> u' = q' = I, u'(0) = 0
 %    v' = q'' = f(t, q, q') = -((1/C)u - Rv)/L
@@ -96,7 +96,7 @@ U0 = [1; 0];
 N = [40 80 160 320]; % antal tidssteg
 t0 = 0; Tslut = 40;
 
-disp(F);
+% disp(F);
 
 figure; 
 for ii = 1:length(N)

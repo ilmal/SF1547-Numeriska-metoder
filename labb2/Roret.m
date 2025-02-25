@@ -75,6 +75,7 @@ N = 10000; % värde på N för beräkning
 h_a = (aslut-a0)/N_a; % steglängd för alpha
 
 ai = a0:h_a:aslut; % skapa alla intervaller för alpha
+Tres = zeros(1, length(ai)); % initiera vektor för y-axel
 
 fprintf('----------------------------------------------------------\n')
 fprintf('Uppgift 4d: Tend baserat på alpha = [0, 10]\n \n')
@@ -114,7 +115,14 @@ for jj = 1:length(ai)
     T = A\b; % lös systemet och spara i T
 
     Tend = (a*h*Te+k*T(end))/(k+ai(jj)*h); % beräkna T(N+1), randpunkten
+    Tres(jj) = Tend; % lägg till Tend till Tres för att plotta
     
     % printa resultatet på Tend för nuvarande alpha-värde
     fprintf('Iteration med a = %.1f: T(N+1) = %.6f\n', ai(jj), Tend);
 end
+
+% plotta
+figure;
+plot(ai, Tres, '-o', LineWidth=1.5);
+legend('Temperaturen som funktion av alpha');
+xlabel('Alpha'); ylabel('Temperatur');
